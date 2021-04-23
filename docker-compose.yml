@@ -1,18 +1,25 @@
 version: '3'
 services:
+  nginx:
+    image: nginx:1.19
+    container_name: nginx
+    restart: always
+    network_mode: host
+    volumes:
+      - ./certs/:/etc/nginx/certs/
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+
   artifactory:
     image: docker.bintray.io/jfrog/artifactory-oss:latest
     container_name: artifactory
-    ports:
-     - "8081:8081"
-     - "8082:8082"
+    network_mode: host
     volumes:
-     - "./data/artifactory:/var/opt/jfrog/artifactory"
-    #  - "./certs:/artifactory_extra_certs"
-#    Add extra Java options by uncommenting the following lines
+      - ./data/artifactory:/var/opt/jfrog/artifactory
 #    environment:
 #     - EXTRA_JAVA_OPTIONS=-Xms512m -Xmx4g
     restart: always
+    depends_on:
+      - nginx
     ulimits:
       nproc: 65535
       nofile:
