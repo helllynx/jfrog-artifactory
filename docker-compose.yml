@@ -6,7 +6,7 @@ services:
     restart: always
     network_mode: host
     volumes:
-      - ./certs/:/etc/nginx/certs/
+      - /etc/letsencrypt/:/etc/letsencrypt/
       - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
 
   artifactory:
